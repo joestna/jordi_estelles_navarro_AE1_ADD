@@ -85,12 +85,16 @@ public class App {
 	}
 	
 	
-	static void Elimina() {
+	static void Elimina( File ficheroSeleccionado ) {
+		
+		ficheroSeleccionado.delete();
 		
 	}
 	
 	
-	static void Renombra() {
+	static void Renombra( File ficheroSeleccionado, File nombreNuevo ) {
+		
+		ficheroSeleccionado.renameTo( nombreNuevo );
 		
 	}
 	
