@@ -19,11 +19,15 @@ public class App {
 		System.out.print( "Introduce el nombre o PATH del directorio a crear : " );
 		String nombreDirectorio = sc.next();
 		
-		CrearCarpeta( nombreDirectorio );
+		System.out.print( "Introduce el nombre del fichero a crear dentor del directorio anterior : " );
+		String nombreFichero = sc.next();
 		
+		CrearFichero( CrearCarpeta( nombreDirectorio ), nombreFichero );
 		
+		sc.close();		
 
 	}
+	
 
 	public static void GetInformation( File fichero) {
 		
@@ -49,12 +53,12 @@ public class App {
 		boolean comodin = directorio.mkdir();
 		
 		if( comodin ) {
-			System.out.println( "> Directorio creado correctamente\n" );
+			System.out.println( "\n> Directorio creado correctamente" );
 			
 			return directorio.getAbsolutePath();
 			
 		}else {
-			System.out.println( "> Error al crear el directorio\n");
+			System.out.println( "\n> Error al crear el directorio");
 			
 			return "";
 
@@ -63,9 +67,20 @@ public class App {
 	}
 	
 	
-	static void CrearFichero() {
+	static void CrearFichero( String path, String nombreFichero ) {
 		
+		File fichero = new File( path + "/" + nombreFichero );
 		
+		boolean comodin = false;
+		
+		try {
+			comodin = fichero.createNewFile();
+			
+		}catch( IOException e ){
+			e.printStackTrace();
+		}
+		
+		if( comodin ) System.out.println( "\n> Fichero creado correctamente\n" );
 		
 	}
 	
