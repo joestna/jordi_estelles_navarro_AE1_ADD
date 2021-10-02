@@ -11,25 +11,58 @@ public class App {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner( System.in );
+		String output = "";
 		
-		File fichero = new File( "/home/jordi/proyectosJavaEclipse/jordi_estelles_navarro_AE1_ADD/src" );
+		System.out.println( "\n\t*** BIENVENIDO! Que desea hacer : ***\n" );
 		
-		GetInformation( fichero );
+		while( !output.equals( "exit" ) ) {
+			System.out.println( "a. Mostrar informacion de un fichero\n" +
+							    "b. Crear un directorio\n" +
+                                "c. Crear un fichero\n" +
+					            "d. Renombrar un fichero\n" +
+                                "e. Eliminar un fichero\n" +
+					
+					            "\nIntroduzca \" exit \" para salir de la aplicacion.\n" );
+			
+			System.out.print( "> " );
+			output = sc.next();
+			
+			switch( output ) {
+				case "a":
+					GetInformation( sc );
+					break;
+				case "b":
+					File directorio = CrearCarpeta( sc );
+					break;
+				case "c":
+					File ficheroCreado = CrearFichero( sc );
+					break;
+				case "d":
+					Renombra( sc );
+					break;
+				case "e":
+					Elimina( sc );
+					break;
+				case "exit":
+					break;
+				default:
+					System.out.println( "\n> Nada seleccionado\n" );
+					break;
+			}
+			
+		}		
 		
-		System.out.print( "Introduce el nombre o PATH del directorio a crear : " );
-		String nombreDirectorio = sc.next();
-		
-		System.out.print( "Introduce el nombre del fichero a crear dentor del directorio anterior : " );
-		String nombreFichero = sc.next();
-		
-		CrearFichero( CrearCarpeta( nombreDirectorio ), nombreFichero );
+		System.out.print( "\n\nGRACIAS. Vuelva pronto!!!\n" );	
 		
 		sc.close();		
 
 	}
 	
 
-	public static void GetInformation( File fichero) {
+	public static void GetInformation( Scanner sc ) {
+		
+		System.out.print( "\nIntroduce el nombre del fichero a seleccionar : " );		
+		File fichero = new File( sc.next() );
 		
 		System.out.print( "\nNombre del " + FicheroODirectorio( fichero ) + " : " + fichero.getName() + "\n" +
 			              "Ubicacion del " + FicheroODirectorio( fichero ) + " : " + fichero.getAbsolutePath() + "\n" +
@@ -38,38 +71,40 @@ public class App {
 		if( FicheroODirectorio( fichero ) == "fichero" ) {
 			System.out.println( "Tamano del fichero : " + fichero.length() );
 			
-		}else {
+		}else if( FicheroODirectorio( fichero ) == "directorio" ){
 			ListarFicherosEnDirectorio( fichero.listFiles(), fichero );
 	
+		}else {
+			System.out.println( "\n> El fichero seleccionado no existe.\n" );
 		}
 		
 	}
 	
 	
-	static String CrearCarpeta( String nombreDirectorio ) {
+	static File CrearCarpeta( Scanner sc ) {
 		
-		File directorio = new File( nombreDirectorio );
+		System.out.print( "\nIntroduce el nombre o PATH del directorio a crear : " );		
+		File directorio = new File( sc.next() );
 		
 		boolean comodin = directorio.mkdir();
 		
 		if( comodin ) {
-			System.out.println( "\n> Directorio creado correctamente" );
-			
-			return directorio.getAbsolutePath();
+			System.out.println( "\n> Directorio creado correctamente\n" );
 			
 		}else {
-			System.out.println( "\n> Error al crear el directorio");
-			
-			return "";
+			System.out.println( "\n> Error al crear el directorio\n");
 
 		}
+		
+		return directorio;
 		
 	}
 	
 	
-	static void CrearFichero( String path, String nombreFichero ) {
+	static File CrearFichero( Scanner sc ) {
 		
-		File fichero = new File( path + "/" + nombreFichero );
+		System.out.print( "\nIntroduce el nombre del fichero a crear (directorio actual) o la ruta donde crearlo : " );		
+		File fichero = new File( sc.next() );
 		
 		boolean comodin = false;
 		
@@ -78,30 +113,58 @@ public class App {
 			
 		}catch( IOException e ){
 			e.printStackTrace();
+			
 		}
 		
-		if( comodin ) System.out.println( "\n> Fichero creado correctamente\n" );
+		if( comodin ) {
+			System.out.println( "\n> Fichero creado correctamente\n" );
+			
+		}else {
+			System.out.println( "\nFichero no creado.\n");
+		}
+		
+		return fichero;	
 		
 	}
 	
 	
-	static void Elimina( File ficheroSeleccionado ) {
+	static void Elimina( Scanner sc ) {
 		
-		ficheroSeleccionado.delete();
+		System.out.print( "\nIntroduce la ruta del fichero a eliminar : " );
+		File ficheroAEliminar = new File( sc.next() );
+		
+		boolean comodin = ficheroAEliminar.delete();
+		
+		if( comodin ) System.out.println( "\n> Fichero eliminado correctamente.\n" );
 		
 	}
 	
 	
-	static void Renombra( File ficheroSeleccionado, File nombreNuevo ) {
+	static void Renombra( Scanner sc ) {
 		
-		ficheroSeleccionado.renameTo( nombreNuevo );
+		System.out.print( "\nIntroduce la ruta del fichero a renombrar : " );		
+		File fichero = new File( sc.next() );
+		System.out.print( "\nIntroduce la ruta del fichero a RENOMBRADO : " );		
+		File ficheroNuevoNombre = new File( sc.next() );
+		
+		boolean comodin = fichero.renameTo( ficheroNuevoNombre );
+		
+		if( comodin ) System.out.println( "\n> Fichero renombrado correctamente.\n" );
 		
 	}
 	
 	
 	static String FicheroODirectorio( File fichero ) {
 		
-		if( fichero.isFile() == true ) return "fichero"; else return "directorio";
+		if( fichero.isFile() == true ) {
+			return "fichero";
+			
+		}else if( fichero.isDirectory() ) {
+			return "directorio";
+			
+		}else {
+			return "NULL";
+		}
 		
 	}
 
