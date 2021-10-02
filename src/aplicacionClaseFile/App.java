@@ -4,14 +4,24 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 public class App {
 
 	public static void main(String[] args) {
 		
+		Scanner sc = new Scanner( System.in );
+		
 		File fichero = new File( "/home/jordi/proyectosJavaEclipse/jordi_estelles_navarro_AE1_ADD/src" );
 		
 		GetInformation( fichero );
+		
+		System.out.print( "Introduce el nombre o PATH del directorio a crear : " );
+		String nombreDirectorio = sc.next();
+		
+		CrearCarpeta( nombreDirectorio );
+		
+		
 
 	}
 
@@ -32,12 +42,30 @@ public class App {
 	}
 	
 	
-	static void CrearCarpeta() {
+	static String CrearCarpeta( String nombreDirectorio ) {
+		
+		File directorio = new File( nombreDirectorio );
+		
+		boolean comodin = directorio.mkdir();
+		
+		if( comodin ) {
+			System.out.println( "> Directorio creado correctamente\n" );
+			
+			return directorio.getAbsolutePath();
+			
+		}else {
+			System.out.println( "> Error al crear el directorio\n");
+			
+			return "";
+
+		}
 		
 	}
 	
 	
 	static void CrearFichero() {
+		
+		
 		
 	}
 	
@@ -70,7 +98,7 @@ public class App {
 		                        "Espacio total del directorio : " + ficheroHijo.getTotalSpace() + "\n" );
 		}
 		
-		System.out.println( "\n---\n" + ficheros.length );
+		System.out.println( "\n---\n");
 		
 	}
 	
