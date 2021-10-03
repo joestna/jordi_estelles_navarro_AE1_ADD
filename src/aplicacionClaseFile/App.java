@@ -31,20 +31,26 @@ public class App {
 				case "a":
 					GetInformation( sc );
 					break;
+					
 				case "b":
-					File directorio = CrearCarpeta( sc );
+					CrearCarpeta( sc );
 					break;
+					
 				case "c":
-					File ficheroCreado = CrearFichero( sc );
+					CrearFichero( sc );
 					break;
+					
 				case "d":
 					Renombra( sc );
 					break;
+					
 				case "e":
 					Elimina( sc );
 					break;
+					
 				case "exit":
 					break;
+					
 				default:
 					System.out.println( "\n> Nada seleccionado\n" );
 					break;
@@ -58,7 +64,10 @@ public class App {
 
 	}
 	
-
+	
+	// Metodo: GetInformation
+	// Parametros de entrada: scanner
+	// Funcionalidad: Pide que se seleccione un fichero y muestra su informacion
 	public static void GetInformation( Scanner sc ) {
 		
 		System.out.print( "\nIntroduce el nombre del fichero a seleccionar : " );		
@@ -81,7 +90,10 @@ public class App {
 	}
 	
 	
-	static File CrearCarpeta( Scanner sc ) {
+	// Metodo: CrearCarpeta
+	// Parametros de entrada: scanner
+	// Funcionalidad: Pide que se introduzca un nombre que sera el nombre del directorio a crear
+	static void CrearCarpeta( Scanner sc ) {
 		
 		System.out.print( "\nIntroduce el nombre o PATH del directorio a crear : " );		
 		File directorio = new File( sc.next() );
@@ -96,12 +108,13 @@ public class App {
 
 		}
 		
-		return directorio;
-		
 	}
 	
 	
-	static File CrearFichero( Scanner sc ) {
+	// Metodo: CrearFichero
+	// Parametros de entrada: scanner
+	// Funcionalidad: Pide que se introduzca un nombre que sera el nombre del fichero a crear
+	static void CrearFichero( Scanner sc ) {
 		
 		System.out.print( "\nIntroduce el nombre del fichero a crear (directorio actual) o la ruta donde crearlo : " );		
 		File fichero = new File( sc.next() );
@@ -111,23 +124,25 @@ public class App {
 		try {
 			comodin = fichero.createNewFile();
 			
-		}catch( IOException e ){
+		} catch (IOException e) {
 			e.printStackTrace();
 			
-		}
-		
-		if( comodin ) {
-			System.out.println( "\n> Fichero creado correctamente\n" );
-			
-		}else {
-			System.out.println( "\nFichero no creado.\n");
-		}
-		
-		return fichero;	
+		}finally {
+			if( comodin ) {
+				System.out.println( "\nFichero creado correctamente.\n" );
+				
+			}else {
+				System.out.println( "\nFichero no creado\n" );
+				
+			}			
+		}		
 		
 	}
 	
 	
+	// Metodo: Elimina
+	// Parametros de entrada: scanner
+	// Funcionalidad: Pide que se introduzca un nombre que sera el nombre del fichero a eliminar
 	static void Elimina( Scanner sc ) {
 		
 		System.out.print( "\nIntroduce la ruta del fichero a eliminar : " );
@@ -140,11 +155,14 @@ public class App {
 	}
 	
 	
+	// Metodo: Renombra
+	// Parametros de entrada: scanner
+	// Funcionalidad: Pide que se introduzca un nombre que sera el nombre del fichero a renombrar
 	static void Renombra( Scanner sc ) {
 		
-		System.out.print( "\nIntroduce la ruta del fichero a renombrar : " );		
+		System.out.print( "\nIntroduce el nombre del fichero a renombrar (directorio actual) o la ruta del fichero : " );		
 		File fichero = new File( sc.next() );
-		System.out.print( "\nIntroduce la ruta del fichero a RENOMBRADO : " );		
+		System.out.print( "\nIntroduce el nombre del fichero a RENOMBRADO (directorio actual) o la ruta del fichero : " );		
 		File ficheroNuevoNombre = new File( sc.next() );
 		
 		boolean comodin = fichero.renameTo( ficheroNuevoNombre );
@@ -154,6 +172,9 @@ public class App {
 	}
 	
 	
+	// Metodo: FicheroODirectorio
+	// Parametros de entrada: File
+	// Funcionalidad: Indica si el fichero pasado por parametro es un fichero o un directorio
 	static String FicheroODirectorio( File fichero ) {
 		
 		if( fichero.isFile() == true ) {
@@ -169,6 +190,9 @@ public class App {
 	}
 
 	
+	// Metodo: ListarFicherosEnDirectorio
+	// Parametros de entrada: File[], File
+	// Funcionalidad: Lista los ficheros que contiene el directorio y muestra su informacion
 	static void ListarFicherosEnDirectorio( File[] ficheros, File fichero ) {
 		
 		System.out.println( "\n---\nCantidad de elementos en directorio : " + ficheros.length + "\n---\n" );
@@ -185,6 +209,9 @@ public class App {
 	}
 	
 	
+	// Metodo: milisegundosAFecha
+	// Parametros de entrada: long
+	// Funcionalidad: Transforma el parametro pasado en formato fecha del calendario Gregoriano
 	static Date milisegundosAFecha( Long milisegundos ) {
 		
 		Date fecha = new Date( milisegundos );
@@ -196,6 +223,9 @@ public class App {
 	}
 	
 	
+	// Metodo: EspacioTotalMenosLibre
+	// Parametros de entrada: long, long
+	// Funcionalidad: Muestra la informacion disponible en un directorio
 	static int EspacioTotalMenosLibre( Long espacioTotal, Long espacioLibre ) {
 		
 		return espacioTotal.intValue() - espacioLibre.intValue();
